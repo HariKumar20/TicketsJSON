@@ -1,0 +1,25 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [update-json]
+
+jobs:
+  update-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Update JSON file
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -X PATCH \
+            "https://raw.githubusercontent.com/HariKumar20/TicketsJSON/refs/heads/main/movieTickets.json" \
+            -H 'Authorization: Bearer $GITHUB_TOKEN' \
+            -H 'Content-Type: application/json' \
+            -d '{"key": "new value"}'
+
